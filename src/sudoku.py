@@ -78,3 +78,14 @@ class Sudoku:
         self.__possible_values[i][j] = [value]
         self.__sudoku[i][j] = value
         self.__solved_values += 1
+
+    def print(self):
+        for i, row in enumerate(self.__sudoku):
+            if i != 0 and i % GROUP_WIDTH == 0:
+                print('---------------------')
+            formatted_row = []
+            for j, value in enumerate(row):
+                if j != 0 and j % GROUP_WIDTH == 0:
+                    formatted_row.append('|')
+                formatted_row.append(str(value))
+            print(' '.join(formatted_row))

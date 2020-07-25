@@ -16,8 +16,13 @@ def cli():
 def solve(sudoku):
     """Solve a sudoku"""
     parsed_sudoku = Sudoku(sudoku)
+    print('\nSudoku:\n')
+    parsed_sudoku.print()
     solve_sudoku(parsed_sudoku)
-    print('Solved: {}'.format(parsed_sudoku))
+    print('\n=============================\n')
+    print('Solution:\n')
+    parsed_sudoku.print()
+    print('\nSerialized: {}\n'.format(parsed_sudoku))
 
 
 @click.command()
