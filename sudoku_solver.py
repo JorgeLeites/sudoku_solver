@@ -50,6 +50,53 @@ def is_valid(value, i, j, possibilities):
     return True
 
 
+def is_only_option(value, i, j, possibilities):
+    return (
+        is_only_option_row(value, i, j, possibilities) or
+        is_only_option_column(value, i, j, possibilities) or
+        is_only_option_group(value, i, j, possibilities)
+    )
+
+
+def is_only_option_row(value, i, j, possibilities):
+    for inspecting_j in range(ROW_LENGTH):
+        possible_values = possibilities[i][inspecting_j]
+        if (
+            inspecting_j != j and
+            value in possible_values
+        ):
+            return False
+
+    return True
+
+
+def is_only_option_column(value, i, j, possibilities):
+    for inspecting_i in range(ROW_LENGTH):
+        possible_values = possibilities[inspecting_i][j]
+        if (
+            inspecting_i != i and
+            value in possible_values
+        ):
+            return False
+
+    return True
+
+
+def is_only_option_group(value, i, j, possibilities):
+    i_offset = int(math.floor(i / GROUP_WIDTH) * GROUP_WIDTH)
+    j_offset = int(math.floor(j / GROUP_WIDTH) * GROUP_WIDTH)
+    for inspecting_i in range(i_offset, i_offset + GROUP_WIDTH):
+        for inspecting_j in range(j_offset, j_offset + GROUP_WIDTH):
+            possible_values = possibilities[inspecting_i][inspecting_j]
+            if (
+                (inspecting_i != i or inspecting_j != j) and
+                value in possible_values
+            ):
+                return False
+
+    return True
+
+
 def solve_sudoku(sudoku):
     # Fill possible values with all numbers from 1 to 9
     possible_values = []
@@ -69,12 +116,17 @@ def solve_sudoku(sudoku):
         solved = True
         for i in range(ROW_LENGTH):
             for j in range(ROW_LENGTH):
-                for value in possible_values[i][j]:
-                    if not is_valid(value, i, j, possible_values):
-                        changed = True
-                        possible_values[i][j].remove(value)
                 if len(possible_values[i][j]) > 1:
-                    solved = False
+                    for value in possible_values[i][j]:
+                        if is_only_option(value, i, j, possible_values):
+                            changed = True
+                            possible_values[i][j] = [value]
+                            break
+                        elif not is_valid(value, i, j, possible_values):
+                            changed = True
+                            possible_values[i][j].remove(value)
+                    if len(possible_values[i][j]) > 1:
+                        solved = False
 
     solution = []
     for i in range(ROW_LENGTH):
@@ -117,8 +169,8 @@ with open('datasets/sudoku.csv') as dataset:
     total_problems = sum(1 for row in reader)
     solved_problems = 0
     dataset.seek(0)
+    printProgress(solved_problems, total_problems)
     for row in reader:
-        printProgress(solved_problems, total_problems)
         problem = row[0]
         real_solution = row[1]
         sudoku = parse_sudoku(problem)
@@ -131,5 +183,6 @@ with open('datasets/sudoku.csv') as dataset:
                 )
             )
         solved_problems += 1
+        printProgress(solved_problems, total_problems)
 
 print('Done!')
