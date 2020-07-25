@@ -5,6 +5,7 @@ import sys
 ROW_LENGTH = 9
 GROUP_WIDTH = 3
 
+
 def parse_sudoku(serialized):
     parsed = []
     for i in range(ROW_LENGTH):
@@ -12,6 +13,7 @@ def parse_sudoku(serialized):
         for j in range(ROW_LENGTH):
             parsed[i].append(int(serialized[i * ROW_LENGTH + j]))
     return parsed
+
 
 def is_valid(value, i, j, possibilities):
     # Inspect rows and columns
@@ -47,6 +49,7 @@ def is_valid(value, i, j, possibilities):
 
     return True
 
+
 def solve_sudoku(sudoku):
     # Fill possible values with all numbers from 1 to 9
     possible_values = []
@@ -54,7 +57,9 @@ def solve_sudoku(sudoku):
         possible_values.append([])
         for j in range(ROW_LENGTH):
             sudoku_value = sudoku[i][j]
-            possibilities = list(range(1, 10)) if sudoku_value == 0 else [sudoku_value]
+            possibilities = list(range(1, 10)) if sudoku_value == 0 else [
+                sudoku_value
+            ]
             possible_values[i].append(possibilities)
 
     changed = True
@@ -82,12 +87,14 @@ def solve_sudoku(sudoku):
                 solution[i].append(possible_values[i][j][0])
     return solution
 
+
 def serialize_sudoku(sudoku):
     serialized = ''
     for i in range(ROW_LENGTH):
         for j in range(ROW_LENGTH):
             serialized += str(sudoku[i][j])
     return(serialized)
+
 
 def printProgress(solved, total):
     """Print a progress bar on the console"""
@@ -104,6 +111,7 @@ def printProgress(solved, total):
     if solved == total:
         print('')
 
+
 with open('datasets/sudoku.csv') as dataset:
     reader = csv.reader(dataset)
     total_problems = sum(1 for row in reader)
@@ -116,7 +124,12 @@ with open('datasets/sudoku.csv') as dataset:
         sudoku = parse_sudoku(problem)
         solution = solve_sudoku(sudoku)
         if serialize_sudoku(solution) != real_solution:
-            raise Exception('Incorrect solution: {} != {}'.format(serialize_sudoku(solution), real_solution))
+            raise Exception(
+                'Incorrect solution: {} != {}'.format(
+                    serialize_sudoku(solution),
+                    real_solution
+                )
+            )
         solved_problems += 1
 
 print('Done!')
