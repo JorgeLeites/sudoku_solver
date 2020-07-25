@@ -2,7 +2,8 @@ import csv
 import click
 
 from src.printer import print_progress
-from src.solver import parse_sudoku, solve_sudoku, serialize_sudoku
+from src.solver import solve_sudoku
+from src.sudoku import Sudoku
 
 
 @click.group()
@@ -14,9 +15,9 @@ def cli():
 @click.argument('sudoku')
 def solve(sudoku):
     """Solve a sudoku"""
-    parsed_sudoku = parse_sudoku(sudoku)
-    solution = solve_sudoku(parsed_sudoku)
-    print('Solved: {}'.format(serialize_sudoku(solution)))
+    parsed_sudoku = Sudoku(sudoku)
+    solve_sudoku(parsed_sudoku)
+    print('Solved: {}'.format(parsed_sudoku))
 
 
 @click.command()
@@ -30,15 +31,13 @@ def test(dataset):
     print_progress(solved_problems, total_problems)
     for row in reader:
         problem = row[0]
-        real_solution = row[1]
-        sudoku = parse_sudoku(problem)
-        solution = solve_sudoku(sudoku)
-        if serialize_sudoku(solution) != real_solution:
+        solution = row[1]
+        sudoku = Sudoku(problem)
+        solve_sudoku(sudoku)
+        if str(sudoku) != solution:
             raise Exception(
                 "Incorrect solution: {} != {}".format(
-                    serialize_sudoku(solution), real_solution
-                )
-            )
+                    sudoku, solution))
         solved_problems += 1
         print_progress(solved_problems, total_problems)
 
