@@ -20,9 +20,12 @@ def solve(sudoku):
     parsed_sudoku.print()
     solve_sudoku(parsed_sudoku)
     print('\n=============================\n')
-    print('Solution:\n')
-    parsed_sudoku.print()
-    print('\nSerialized: {}\n'.format(parsed_sudoku))
+    if (parsed_sudoku.is_solved()):
+        print('Solution:\n')
+        parsed_sudoku.print()
+        print('\nSerialized: {}\n'.format(parsed_sudoku))
+    else:
+        print("Couldn't find the solution :(\n")
 
 
 @click.command()
