@@ -56,7 +56,7 @@ class Sudoku:
         for iter_i in range(offset_i, offset_i + GROUP_WIDTH):
             for iter_j in range(offset_j, offset_j + GROUP_WIDTH):
                 result.append(
-                    self.possible_values[iter_i ][iter_j ])
+                    self.possible_values[iter_i][iter_j])
         return result
 
     def is_solved(self):

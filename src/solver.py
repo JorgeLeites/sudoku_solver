@@ -25,7 +25,7 @@ def is_valid(value, i, j, sudoku):
 
     # Inspect groups
     possibilities = sudoku.get_possible_group_values(i, j)
-    inspected_index = (i%GROUP_WIDTH) * GROUP_WIDTH + (j%GROUP_WIDTH)
+    inspected_index = (i % GROUP_WIDTH) * GROUP_WIDTH + (j % GROUP_WIDTH)
     for index, possible_values in enumerate(possibilities):
         if (
             (index != inspected_index)
@@ -65,7 +65,7 @@ def is_only_option_column(value, i, j, sudoku):
 
 def is_only_option_group(value, i, j, sudoku):
     possibilities = sudoku.get_possible_group_values(i, j)
-    inspected_index = (i%GROUP_WIDTH) * GROUP_WIDTH + (j%GROUP_WIDTH)
+    inspected_index = (i % GROUP_WIDTH) * GROUP_WIDTH + (j % GROUP_WIDTH)
     for index, possible_values in enumerate(possibilities):
         if (
             (index != inspected_index) and
@@ -74,7 +74,6 @@ def is_only_option_group(value, i, j, sudoku):
             return False
 
     return True
-
 
 
 def solve_sudoku(sudoku):
