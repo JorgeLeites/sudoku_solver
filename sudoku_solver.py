@@ -18,12 +18,12 @@ def solve(sudoku):
     parsed_sudoku = Sudoku(sudoku)
     print('\nSudoku:\n')
     parsed_sudoku.print()
-    solve_sudoku(parsed_sudoku)
+    solved_sudoku = solve_sudoku(parsed_sudoku)
     print('\n=============================\n')
-    if (parsed_sudoku.is_solved()):
+    if (solved_sudoku.is_solved()):
         print('Solution:\n')
-        parsed_sudoku.print()
-        print('\nSerialized: {}\n'.format(parsed_sudoku))
+        solved_sudoku.print()
+        print('\nSerialized: {}\n'.format(solved_sudoku))
     else:
         print("Couldn't find the solution :(\n")
 
@@ -41,7 +41,7 @@ def test(dataset):
         problem = row[0]
         solution = row[1]
         sudoku = Sudoku(problem)
-        solve_sudoku(sudoku)
+        sudoku = solve_sudoku(sudoku)
         if str(sudoku) != solution:
             raise Exception(
                 "Incorrect solution: {} != {}".format(
