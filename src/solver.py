@@ -57,17 +57,18 @@ def search_solution(sudoku, i, j):
     if sudoku.is_solved():
         return sudoku
 
+    next_i = (i + 1) % ROW_LENGTH
+    next_j = j + 1 if next_i == 0 else j
+
     if sudoku.is_position_solved(i, j):
-        return search_solution(sudoku, (i + 1) %
-                               ROW_LENGTH, j + math.floor((i + 1) / ROW_LENGTH))
+        return search_solution(sudoku, next_i, next_j)
 
     possibilities = sudoku.get_possible_values(i, j)
     for value in possibilities:
         test_sudoku = copy.deepcopy(sudoku)
         try:
             test_sudoku.set_value(i, j, value)
-            return search_solution(test_sudoku, (i + 1) %
-                                   ROW_LENGTH, j + math.floor((i + 1) / ROW_LENGTH))
+            return search_solution(test_sudoku, next_i, next_j)
         except BaseException:
             pass
     raise Exception('None of the possible values are valid.')
