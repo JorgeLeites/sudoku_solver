@@ -1,6 +1,7 @@
 import math
 
 from src.constants import ROW_LENGTH, GROUP_WIDTH
+from src.exceptions import SudokuSolvingError, InvalidInputError
 
 
 class Sudoku:
@@ -11,6 +12,9 @@ class Sudoku:
         self.__set_possibilities()
 
     def __parse(self, serialized):
+        if len(serialized) != ROW_LENGTH * ROW_LENGTH:
+            raise InvalidInputError('The length of the sudoku is incorrect.')
+
         self.__sudoku = []
         for i in range(ROW_LENGTH):
             new_row = []
@@ -63,8 +67,8 @@ class Sudoku:
             self.__possible_values[i][j][value - 1] = False
             number_of_possibilities = self.get_possibilities_number(i, j)
             if number_of_possibilities == 0:
-                raise Exception(
-                    'There are no more possibilities for position {}, {}'.format(i, j))
+                raise SudokuSolvingError(
+                    'There are no more possibilities for position {}, {}.'.format(i, j))
             if number_of_possibilities == 1:
                 for index, possible in enumerate(self.__possible_values[i][j]):
                     if possible:
@@ -107,7 +111,7 @@ class Sudoku:
             print(' '.join(formatted_row))
 
     def __str__(self):
-        serialized = ""
+        serialized = ''
         for row in self.__sudoku:
             for value in row:
                 serialized += str(value)

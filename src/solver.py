@@ -2,6 +2,7 @@ import math
 import copy
 
 from src.constants import ROW_LENGTH, GROUP_WIDTH
+from src.exceptions import SudokuSolvingError
 
 
 def is_only_option(value, i, j, sudoku):
@@ -69,9 +70,9 @@ def search_solution(sudoku, i, j):
         try:
             test_sudoku.set_value(i, j, value)
             return search_solution(test_sudoku, next_i, next_j)
-        except BaseException:
+        except SudokuSolvingError:
             pass
-    raise Exception('None of the possible values are valid.')
+    raise SudokuSolvingError('None of the possible values are valid.')
 
 
 def solve_sudoku(sudoku):
